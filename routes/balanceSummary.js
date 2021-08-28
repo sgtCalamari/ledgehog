@@ -5,7 +5,9 @@ const router = express.Router();
 
 // home page route
 router.get('/', function(req, res) {
-  res.send(pug.renderFile('./app/balanceSummary.pug', db.getBalanceSummary()));
+  console.log('routing to balanceSummary');
+  const balanceSummary = db.getBalanceSummary();
+  res.send(pug.renderFile('./app/balanceSummary.pug', balanceSummary));
 });
 
 module.exports = router;

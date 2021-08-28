@@ -11,9 +11,7 @@ head
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
   )
 body
-  h1
-    span: i(class="bi bi-caret-right-square")
-    |  Available Balances
+  h1 Available Balances
   table(class="table table-striped")
     thead
       tr
@@ -26,8 +24,7 @@ body
         tr
           td #{detail.lastTxDate}
           td
-            //-a(href='/accountDetails/'+detail.accountId) #{detail.accountAdmin} #{detail.accountName}
-            a(href='/accountDetails') #{detail.accountAdmin} #{detail.accountName}
+            a(href='/accountDetails/'+detail.accountId) #{detail.accountAdmin} #{detail.accountName}
           td $#{detail.balance}
           if detail.credit
             td $#{detail.credit}

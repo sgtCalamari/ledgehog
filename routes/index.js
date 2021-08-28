@@ -13,11 +13,8 @@ app.use('/accountDetails', accountDetails);
 
 // default route
 app.get('*', function(req, res) {
+  console.log('default route reached, routing to balanceSummary');
   res.redirect('/balanceSummary');
-});
-
-app.listen(app.localPort, () => {
-  console.log(`Node Express server for ${app.displayName} listening at http://localhost:${app.localPort}`);
 });
 
 module.exports = app;
