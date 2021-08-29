@@ -11,9 +11,11 @@ head
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
   )
 body
-  h1
-    span: a(href="/balanceSummary"): i(class="bi bi-arrow-left-circle")
-    |  #{accountName} Summary
+  div
+    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button(style="float: right; margin-top: 0.75em" class="btn btn-primary"): span.bi.bi-plus New Transaction
+    h1
+      span: a(href="/"): i(class="bi bi-arrow-left-circle")
+      |  #{accountName} Summary
   hr
   h4 Transactions
   table(class="table table-striped")
@@ -21,14 +23,14 @@ body
       tr
         th Date
         th Description
-        th Category
+        th: a(href="/TransactionCategories") Category
         th Amount
     tbody
       if transactions
         each tx in transactions
           tr
             td #{tx.date}
-            td #{tx.description}
+            td: strong #{tx.description}
             td #{tx.category}
             td #{tx.amount}
   script(

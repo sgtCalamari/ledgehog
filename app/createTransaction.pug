@@ -1,0 +1,43 @@
+//- page to create new transaction for the given account
+head
+  link(
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css",
+    rel="stylesheet",
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We",
+    crossorigin="anonymous"
+  )
+  link(
+    rel="stylesheet",
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+  )
+body
+  h1
+    span: a(href="/AccountDetails/" + accountId): i.bi.bi-x-circle
+    |  Create New Transaction
+  form(method="post" action="/AccountDetails/" + accountId enctype="application/x-www-form-urlencoded")
+    div.mb-3
+      label.form-label(for="txDate") Date
+      input.form-control#txDate(name="date" value=new Date().toDateString())
+    div.mb-3
+      label.form-label(for="txAccount") Account
+      input.form-control#txAccount(name="accountName" type="text" value=accountName readonly)
+    div.mb-3
+      label.form-label(for="txDesc") Description
+      input.form-control#txDesc(name="description")
+    div.mb-3
+      label.form-label(for="txCategory") Category
+      select.form-select#txCategory(aria-label="Category Select" name="category")
+        each category in categories
+          option #{category}
+    div.mb-3
+      label.form-label(for="txAmount") Amount
+      div.input-group
+        span.input-group-text $
+        input.form-control#txAmount(type="text" aria-label="Transaction Amount" name="amount")
+    div.mb-3
+      button.btn.btn-primary(type="submit") Submit
+  script(
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js",
+    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj",
+    crossorigin="anonymous"
+  )
