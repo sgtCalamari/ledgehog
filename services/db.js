@@ -5,7 +5,7 @@ const client = new MongoClient(uri);
 const database = client.db('ledger');
 
 // accounts queries
-async function getAccountNameById(client, accountId) {
+async function getAccountNameById(accountId) {
   console.log(`begin query for account name by id: ${accountId}`);
   // accounts query
   const accounts = database.collection('accounts');
@@ -18,43 +18,53 @@ async function getAccountNameById(client, accountId) {
   console.log(`account found: ${accountName}`);
   return accountName;
 }
+async function getAccounts(query, options) {
+  console.log('begin query for accounts');
+  // accounts query
+  const collection = database.collection('accounts');
+  const cursor = await collection.find(query, options);
+  const accountsFound = await cursor.count();
+  if (accountsFound === 0) {
+    console.log('no accounts found');
+    return;
+  }
+  console.log(`${accountsFound} accounts found`);
+  return await cursor.toArray();
+}
 
 // transactions queries
-async function getTransactionsForAccount(client, accountId) {
+async function getTransactionsForAccount(accountId) {
   console.log(`begin query for transactions by account id: ${accountId}`);
   // transactions query
-  const transactions = database.collection('transactions');
   const query = { account: new ObjectId(accountId) };
-  const options = {
-    sort: { date: 1 },
-    projection: {
-      _id: 1,
-      date: 1,
-      account: 1,
-      description: 1,
-      location: 1,
-      category: 1,
-      amount: 1
-    }
-  };
+  return await getTransactions(query);
+}
+async function getTransactions(query, options) {
+  console.log(`begin query for transactions`);
+  // transactions query
+  const transactions = database.collection('transactions');
   const cursor = await transactions.find(query, options);
   const transactionsFound = await cursor.count();
   if (transactionsFound === 0) {
-    console.log(`no transactions found for ${myAccount.name}`);
+    console.log(`no transactions found`);
+    return;
   }
-  console.log(`${transactionsFound} transaction(s) found`);
+  console.log(`${transactionsFound} transactions found`);
   var allValues = await cursor.toArray();
   return allValues.map(t => {
+    amount = Number.parseFloat(t.amount);
     return {
       date: t.date ? t.date.toDateString() : '',
       description: t.description ?? '',
       category: t.category ?? '',
-      amount: t.amount ?? 0
-    };});
+      amount: amount,
+      isDeposit: t.isDeposit
+    };
+  });
 }
 
 // transactionTypes queries
-async function getUniqueCategories(client) {
+async function getUniqueCategories() {
   console.log('begin query for unique categories');
   // transactionTypes query
   const txTypes = database.collection('transactionTypes');
@@ -69,7 +79,7 @@ async function getUniqueCategories(client) {
     .map(v => `${v.description} (${v.parentCategory})`)
     .filter((v, i, a) => a.indexOf(v) === i);
 }
-async function getCategoriesByParentCategory(client) {
+async function getCategoriesByParentCategory() {
   console.log('begin query for transaction categories by parent category');
   // transactionTypes query
   const txTypes = database.collection('transactionTypes');
@@ -81,6 +91,46 @@ async function getCategoriesByParentCategory(client) {
       parentCategory: pc,
       subcategories: allValues.filter(v => v.parentCategory === pc).map(v => v.description).sort()
   }});
+}
+
+// helper functions
+function formatTransactions(transactions) {
+  console.log('formatting transactions for display');
+  return transactions.map(t => {
+    return {
+      date: t.date,
+      description: t.description,
+      category: t.category,
+      amount: (t.isDeposit ? t.amount : -1 * t.amount)
+    }});
+}
+function formatAccountBalanceSummary(account, transactions) {
+  console.log(`formatting balance summary for ${account.administrator} ${account.name}`);
+  var balanceSummary = {
+    accountId: account._id,
+    accountAdmin: account.administrator,
+    accountName: account.name
+  };
+  balanceSummary.lastTxDate = transactions.map(t => t.date).sort().pop();
+  var totalDeposits = 0;
+  var totalWithdrawals = 0;
+  const deposits = transactions.filter(t => t.isDeposit);
+  if (deposits.length > 0) {
+    console.log(`${deposits.length} deposits found`);
+    totalDeposits += deposits.map(t => t.amount).reduce((a, c) => a + c);
+  }
+  const withdrawals = transactions.filter(t => !t.isDeposit);
+  if (withdrawals.length > 0) {
+    console.log(`${withdrawals.length} withdrawals found`);
+    totalWithdrawals += withdrawals.map(t => t.amount).reduce((a, c) => a + c);
+  }
+  if (account.limit) {
+    balanceSummary.balance = (account.balance + totalWithdrawals - totalDeposits).toFixed(2);
+    balanceSummary.credit = (account.limit - balanceSummary.balance).toFixed(2);
+  } else {
+    balanceSummary.balance = (account.balance + totalDeposits - totalWithdrawals).toFixed(2);
+  }
+  return balanceSummary;
 }
 
 // module functions
@@ -97,8 +147,8 @@ async function getAccountDetails(accountId) {
   console.log(`begin account details query for id: ${accountId}`);
   try {
     await client.connect();
-    const accountName = await getAccountNameById(client, accountId);
-    const transactions = await getTransactionsForAccount(client, accountId);
+    const accountName = await getAccountNameById(accountId);
+    const transactions = formatTransactions(await getTransactionsForAccount(accountId));
     return {
       accountId: accountId,
       accountName: accountName,
@@ -118,7 +168,22 @@ async function getBalanceSummary() {
     balance: Number
     credit: Number
   */
-  return null;
+  console.log(`begin balance summary details`);
+  try {
+    await client.connect();
+    const accounts = await getAccounts();
+    var results = [];
+    for (var i = 0;i < accounts.length;i++) {
+      const transactions = await getTransactionsForAccount(accounts[i]._id);
+      const balanceSummary = formatAccountBalanceSummary(accounts[i], transactions);
+      results.push(balanceSummary);
+    }
+    return {
+      accountDetails: results.sort(r => r.accountName)
+    };
+  } finally {
+    await client.close();
+  }
 }
 async function getCreateTransactionDetails(accountId) {
   /* returns object with:
@@ -128,8 +193,8 @@ async function getCreateTransactionDetails(accountId) {
   */
   try {
     await client.connect();
-    const accountName = await getAccountNameById(client, accountId);
-    const categories = await getUniqueCategories(client);
+    const accountName = await getAccountNameById(accountId);
+    const categories = await getUniqueCategories();
     return {
       accountId: accountId,
       accountName: accountName,
@@ -168,7 +233,7 @@ async function getTransactionCategoriesSummary() {
   */
   try {
     await client.connect();
-    const categories = await getCategoriesByParentCategory(client);
+    const categories = await getCategoriesByParentCategory();
     categories.forEach((c, i) => {
       c.parentId = i;
     });
@@ -185,7 +250,7 @@ async function getCreateCategoryDetails() {
   */
   try {
     await client.connect();
-    const categories = await getCategoriesByParentCategory(client);
+    const categories = await getCategoriesByParentCategory();
     return {
       parentCategories: categories.map(c => c.parentCategory).filter((v, i, a) => a.indexOf(v) === i)
     };

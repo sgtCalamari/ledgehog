@@ -20,7 +20,6 @@ app.use('/TransactionCategories', txCategories);
 
 // default route
 app.get('*', function(req, res) {
-  console.log('default route reached, routing to balanceSummary');
   res.redirect('/BalanceSummary');
 });
 
