@@ -31,15 +31,21 @@ router.post('/:accountId', function(req, res) {
   const txDesc = req.body.description;
   const txCategory = req.body.category;
   const txAmount = req.body.amount;
+  const isDeposit = req.body.isDeposit === 'checked';
   const newTransaction = {
     date: txDate ?? new Date(),
     account: txAccount,
     description: txDesc,
     category: txCategory,
-    amount: txAmount
+    amount: txAmount,
+    isDeposit: isDeposit
   };
   db.createTransaction(newTransaction)
-    .then(result => res.redirect('/AccountDetails/' + req.params.accountId));
+    .then(result => {
+      console.log('transaction added:');
+      console.log(newTransaction);
+      res.redirect('/AccountDetails/' + req.params.accountId);
+    });
 });
 
 module.exports = router;

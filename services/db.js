@@ -211,6 +211,7 @@ async function createTransaction(transactionDetails) {
   description: String
   category: String
   amount: Number
+  isDeposit: Boolean
   location: String (optional)
   */
   console.log('begin create transaction');
