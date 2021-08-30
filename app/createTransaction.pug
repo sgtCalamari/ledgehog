@@ -17,7 +17,7 @@ body
   form(method="post" action="/AccountDetails/" + accountId enctype="application/x-www-form-urlencoded")
     div.mb-3
       label.form-label(for="txDate") Date
-      input.form-control#txDate(name="date" value=new Date().toDateString())
+      input.form-control#txDate(type="date" name="date" value=new Intl.DateTimeFormat('se-SE').format(new Date()))
     div.mb-3
       label.form-label(for="txAccount") Account
       input.form-control#txAccount(name="accountName" type="text" value=accountName readonly)

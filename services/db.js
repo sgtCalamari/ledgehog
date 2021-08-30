@@ -49,6 +49,7 @@ async function getTransactions(query, options) {
     console.log(`no transactions found`);
     return;
   }
+  await cursor.sort({date: 1});
   console.log(`${transactionsFound} transactions found`);
   var allValues = await cursor.toArray();
   return allValues.map(t => {
