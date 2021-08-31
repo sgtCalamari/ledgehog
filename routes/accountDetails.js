@@ -48,4 +48,41 @@ router.post('/:accountId', function(req, res) {
     });
 });
 
+// GET modify transaction detail screen
+router.get('/:accountId/ModifyTransaction/:transactionId', function(req, res) {
+  console.log('routing to modify specific transaction page');
+  var modifyTxDetailsQuery = db.getModifyTransactionDetails(req.params.accountId, req.params.transactionId);
+  modifyTxDetailsQuery.then(result =>
+    res.send(pug.renderFile('./app/modifyTransaction.pug', result))
+  );
+});
+
+// POST modify transaction for id
+router.post('/:accountId/ModifyTransaction/:transactionId', function(req, res) {
+  console.log(`attempting to modify transaction _id: ${req.params.transactionId}`);
+  // attempt update document
+  const txId = new ObjectId(req.params.transactionId);
+  const txDate = new Date(req.body.date);
+  const txDesc = req.body.description;
+  const txCategory = req.body.category;
+  const txAmount = parseFloat(req.body.amount);
+  const isDeposit = req.body.isDeposit === 'checked';
+  var modifyTransaction = {
+    id: txId,
+    update: {
+      date: txDate,
+      description: txDesc,
+      category: txCategory,
+      isDeposit: isDeposit,
+      amount: txAmount
+    }
+  };
+  db.modifyTransaction(modifyTransaction)
+    .then(result => {
+      console.log('transaction updated');
+      console.log(result);
+      res.redirect('/AccountDetails/' + req.params.accountId);
+    });
+});
+
 module.exports = router;

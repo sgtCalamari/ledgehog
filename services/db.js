@@ -39,6 +39,18 @@ async function getTransactionsForAccount(accountId) {
   const query = { account: new ObjectId(accountId) };
   return await getTransactions(query);
 }
+async function getTransactionById(transactionId) {
+  console.log(`begin query for transaction by id: ${transactionId}`);
+  // transactions query
+  const collection = database.collection('transactions');
+  const query = { _id: new ObjectId(transactionId) };
+  const tx = await collection.findOne(query);
+  if (!tx) {
+    console.error('unable to find transaction');
+    return;
+  }
+  return tx;
+}
 async function getTransactions(query, options) {
   console.log(`begin query for transactions`);
   // transactions query
@@ -55,7 +67,8 @@ async function getTransactions(query, options) {
   return allValues.map(t => {
     amount = Number.parseFloat(t.amount);
     return {
-      date: t.date ? t.date.toDateString() : '',
+      _id: t._id,
+      date: t.date,
       description: t.description ?? '',
       category: t.category ?? '',
       amount: amount,
@@ -75,6 +88,7 @@ async function getUniqueCategories() {
     console.error('unable to find any categories');
     return [];
   }
+  await myTypes.sort({description: 1});
   var allValues = await myTypes.toArray();
   return allValues
     .map(v => `${v.description} (${v.parentCategory})`)
@@ -85,6 +99,7 @@ async function getCategoriesByParentCategory() {
   // transactionTypes query
   const txTypes = database.collection('transactionTypes');
   const myTypes = await txTypes.find();
+  await myTypes.sort({parentCategory: 1});
   var allValues = await myTypes.toArray();
   var parentCategories = allValues.map(c => c.parentCategory).filter((v, i, a) => a.indexOf(v) === i);
   return parentCategories.map(pc => {
@@ -99,7 +114,8 @@ function formatTransactions(transactions) {
   console.log('formatting transactions for display');
   return transactions.map(t => {
     return {
-      date: t.date,
+      id: t._id,
+      date: t.date.toUTCString().replace(' 00:00:00 GMT', ''),
       description: t.description,
       category: t.category,
       amount: (t.isDeposit ? t.amount : -1 * t.amount)
@@ -112,7 +128,10 @@ function formatAccountBalanceSummary(account, transactions) {
     accountAdmin: account.administrator,
     accountName: account.name
   };
-  balanceSummary.lastTxDate = transactions.map(t => t.date).sort().pop();
+  balanceSummary.lastTxDate = formatDate(transactions
+    .map(t => t.date)
+    .sort(t => t)
+    .pop());
   var totalDeposits = 0;
   var totalWithdrawals = 0;
   const deposits = transactions.filter(t => t.isDeposit);
@@ -132,6 +151,34 @@ function formatAccountBalanceSummary(account, transactions) {
     balanceSummary.balance = (account.balance + totalDeposits - totalWithdrawals).toFixed(2);
   }
   return balanceSummary;
+}
+function formatDate(date) {
+  console.log(`formatting date: ${date.toUTCString()}`);
+  var dayOfWeek;
+  switch (date.getUTCDay()) {
+    case 0:
+      dayOfWeek = 'Sun';
+      break;
+    case 1:
+      dayOfWeek = 'Mon';
+      break;
+    case 2:
+      dayOfWeek = 'Tue';
+      break;
+    case 3:
+      dayOfWeek = 'Wed';
+      break;
+    case 4:
+      dayOfWeek = 'Thur';
+      break;
+    case 5:
+      dayOfWeek = 'Fri';
+      break;
+    default:
+      dayOfWeek = 'Sat';
+      break;
+  }
+  return `${dayOfWeek} ${date.getUTCMonth()}/${date.getUTCDate()}/${date.getFullYear()}`;
 }
 
 // module functions
@@ -192,6 +239,7 @@ async function getCreateTransactionDetails(accountId) {
   accountName: String,
   categories: Array<String>
   */
+  console.log('begin get create transaction details');
   try {
     await client.connect();
     const accountName = await getAccountNameById(accountId);
@@ -276,6 +324,58 @@ async function createCategory(categoryDetails) {
     await client.close();
   }
 }
+async function getModifyTransactionDetails(accountId, transactionId) {
+  /* returns object with:
+  accountId: String
+  accountName: String
+  transaction: Object
+    _id: String
+    date: Date
+    description: String
+    category: String
+    isDeposit: Boolean
+    amount: Number
+  categories: Array<String>
+  */
+  console.log('begin get modify transaction details');
+  try {
+    await client.connect();
+    const accountName = await getAccountNameById(accountId);
+    const categories = await getUniqueCategories();
+    const transaction = await getTransactionById(transactionId);
+    return {
+      accountId: accountId,
+      accountName: accountName,
+      transaction: transaction,
+      categories: categories
+    };
+  } finally {
+    await client.close();
+  }
+}
+async function modifyTransaction(transactionDetail) {
+  /* accepts object with:
+  id: ObjectId
+  update: Object
+    date: Date
+    description: String
+    category: String
+    isDeposit: Boolean
+    amount: Number
+  */
+  console.log('begin modify transaction');
+  try {
+    await client.connect();
+    // transactions query
+    const collection = database.collection('transactions');
+    const query = { _id: transactionDetail.id };
+    const update = { $set: transactionDetail.update };
+    await collection.updateOne(query, update);
+    console.log('document updated');
+  } finally {
+    await client.close();
+  }
+}
 
 module.exports = {
   getAccountDetails,
@@ -284,5 +384,7 @@ module.exports = {
   createTransaction,
   getTransactionCategoriesSummary,
   getCreateCategoryDetails,
-  createCategory
+  createCategory,
+  getModifyTransactionDetails,
+  modifyTransaction
 };

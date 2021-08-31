@@ -19,7 +19,7 @@ body
         |  #{accountName} Summary
     hr
     h4 Transactions
-    table(class="table table-striped")
+    table.table.table-striped.table-responsive.table-hover
       thead
         tr
           th Date
@@ -30,7 +30,7 @@ body
         if transactions
           each tx in transactions
             tr
-              td #{tx.date}
+              td: a(href="/AccountDetails/"+accountId+"/ModifyTransaction/"+tx.id) #{tx.date}
               td: strong #{tx.description}
               td #{tx.category}
               td $#{tx.amount}
