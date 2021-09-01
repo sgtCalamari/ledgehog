@@ -6,23 +6,26 @@ const db = require('../services/db');
 module.exports.accountDetails = async (req, res) => {
   console.log('routing to specific account details');
   var accountDetailsQuery = db.getAccountDetails(req.params.accountId);
-  accountDetailsQuery.then(result =>
-    res.send(pug.renderFile('./app/accountDetails.pug', result))
-  );
+  accountDetailsQuery.then(result => {
+    result.title = `${result.accountName} | Account Details`;
+    res.send(pug.renderFile('./app/accountDetails.pug', result));
+  });
 };
 module.exports.createTxDetails = async (req, res) => {
   console.log('routing to create transaction for specific account page');
   var createTxDetailsQuery = db.getCreateTransactionDetails(req.params.accountId);
-  createTxDetailsQuery.then(result =>
-    res.send(pug.renderFile('./app/createTransaction.pug', result))
-  );
+  createTxDetailsQuery.then(result => {
+    result.title = 'Create Transaction';
+    res.send(pug.renderFile('./app/createTransaction.pug', result));
+  });
 };
 module.exports.modifyTxDetails = async (req, res) => {
   console.log('routing to modify specific transaction page');
   var modifyTxDetailsQuery = db.getModifyTransactionDetails(req.params.accountId, req.params.transactionId);
-  modifyTxDetailsQuery.then(result =>
-    res.send(pug.renderFile('./app/modifyTransaction.pug', result))
-  );
+  modifyTxDetailsQuery.then(result => {
+    result.title = `${result.transaction.description} | Modify Transaction`;
+    res.send(pug.renderFile('./app/modifyTransaction.pug', result));
+  });
 };
 
 // POST

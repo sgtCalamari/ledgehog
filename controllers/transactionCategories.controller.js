@@ -11,6 +11,7 @@ module.exports.transactionCategories = async (req, res) => {
         req.headers.referer :
         '/';
     } else { result.originalUrl = '/'; }
+    result.title = 'Transaction Categories';
     res.send(pug.renderFile('./app/transactionCategories.pug', result));
   });
 };
@@ -18,6 +19,7 @@ module.exports.createCategoryDetails = async (req, res) => {
   console.log('routing to create transaction category screen');
   var createCategoryDetailsQuery = db.getCreateCategoryDetails();
   createCategoryDetailsQuery.then(result => {
+    result.title = 'Create Category';
     res.send(pug.renderFile('./app/createCategory.pug', result));
   });
 };

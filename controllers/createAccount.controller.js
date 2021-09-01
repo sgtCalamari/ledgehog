@@ -5,7 +5,7 @@ const db = require('../services/db');
 // GET
 module.exports.createAccountDetails = async (req, res) => {
   console.log('routing to create new account page');
-  res.send(pug.renderFile('./app/createAccount.pug'))
+  res.send(pug.renderFile('./app/createAccount.pug'),{title: 'Create Account'});
 };
 
 // POST
