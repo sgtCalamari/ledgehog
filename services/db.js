@@ -112,7 +112,7 @@ async function getCategoriesByParentCategory() {
 // helper functions
 function formatTransactions(transactions) {
   console.log('formatting transactions for display');
-  return transactions.map(t => {
+  return transactions.reverse().map(t => {
     return {
       id: t._id,
       date: t.date.toUTCString().replace(' 00:00:00 GMT', ''),
@@ -178,7 +178,7 @@ function formatDate(date) {
       dayOfWeek = 'Sat';
       break;
   }
-  return `${dayOfWeek} ${date.getUTCMonth()}/${date.getUTCDate()}/${date.getFullYear()}`;
+  return `${dayOfWeek} ${(date.getUTCMonth()+1)}/${date.getUTCDate()}/${date.getFullYear()}`;
 }
 
 // module functions
@@ -340,11 +340,11 @@ async function getModifyTransactionDetails(accountId, transactionId) {
   console.log('begin get modify transaction details');
   try {
     await client.connect();
-    const accountName = await getAccountNameById(accountId);
     const categories = await getUniqueCategories();
     const transaction = await getTransactionById(transactionId);
+    const accountName = await getAccountNameById(transaction.account);
     return {
-      accountId: accountId,
+      accountId: transaction.account,
       accountName: accountName,
       transaction: transaction,
       categories: categories
