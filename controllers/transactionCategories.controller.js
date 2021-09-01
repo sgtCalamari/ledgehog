@@ -6,9 +6,11 @@ module.exports.transactionCategories = async (req, res) => {
   console.log('routing to transaction categories summary');
   var transactionCategoriesQuery = db.getTransactionCategoriesSummary();
   transactionCategoriesQuery.then(result => {
-    result.originalUrl = req.headers.referer.indexOf('AccountDetails') !== -1 ?
-      req.headers.referer :
-      '/';
+    if (req.headers.referer) {
+      result.originalUrl = req.headers.referer.indexOf('AccountDetails') !== -1 ?
+        req.headers.referer :
+        '/';
+    } else { result.originalUrl = '/'; }
     res.send(pug.renderFile('./app/transactionCategories.pug', result));
   });
 };

@@ -225,6 +225,7 @@ async function getBalanceSummary() {
   try {
     await client.connect();
     const accounts = await getAccounts();
+    if (!accounts) return { accountDetails: [] };
     var results = [];
     for (var i = 0;i < accounts.length;i++) {
       const transactions = await getTransactionsForAccount(accounts[i]._id);
