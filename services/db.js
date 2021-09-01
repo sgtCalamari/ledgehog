@@ -112,6 +112,7 @@ async function getCategoriesByParentCategory() {
 // helper functions
 function formatTransactions(transactions) {
   console.log('formatting transactions for display');
+  if (!transactions) return [];
   return transactions.reverse().map(t => {
     return {
       id: t._id,
@@ -128,21 +129,25 @@ function formatAccountBalanceSummary(account, transactions) {
     accountAdmin: account.administrator,
     accountName: account.name
   };
-  balanceSummary.lastTxDate = formatDate(transactions
-    .map(t => t.date)
-    .sort(t => t)
-    .pop());
   var totalDeposits = 0;
   var totalWithdrawals = 0;
-  const deposits = transactions.filter(t => t.isDeposit);
-  if (deposits.length > 0) {
-    console.log(`${deposits.length} deposits found`);
-    totalDeposits += deposits.map(t => t.amount).reduce((a, c) => a + c);
-  }
-  const withdrawals = transactions.filter(t => !t.isDeposit);
-  if (withdrawals.length > 0) {
-    console.log(`${withdrawals.length} withdrawals found`);
-    totalWithdrawals += withdrawals.map(t => t.amount).reduce((a, c) => a + c);
+  if (transactions) {
+    balanceSummary.lastTxDate = formatDate(transactions
+      .map(t => t.date)
+      .sort(t => t)
+      .pop());
+    const deposits = transactions.filter(t => t.isDeposit);
+    if (deposits.length > 0) {
+      console.log(`${deposits.length} deposits found`);
+      totalDeposits += deposits.map(t => t.amount).reduce((a, c) => a + c);
+    }
+    const withdrawals = transactions.filter(t => !t.isDeposit);
+    if (withdrawals.length > 0) {
+      console.log(`${withdrawals.length} withdrawals found`);
+      totalWithdrawals += withdrawals.map(t => t.amount).reduce((a, c) => a + c);
+    }
+  } else {
+    balanceSummary.lastTxDate = 'No transactions';
   }
   if (account.limit) {
     balanceSummary.balance = (account.balance + totalWithdrawals - totalDeposits).toFixed(2);
@@ -376,6 +381,24 @@ async function modifyTransaction(transactionDetail) {
     await client.close();
   }
 }
+async function createAccount(accountDetails) {
+  /* accepts object with:
+  name: String
+  administrator: String
+  balance: Number
+  limit: Number (optional)
+  */
+  console.log('begin create account query');
+  try {
+    await client.connect();
+    // accounts query
+    const collection = database.collection('accounts');
+    const result = await collection.insertOne(accountDetails);
+    console.log(`document added with _id: ${result.insertedId}`);
+  } finally {
+    await client.close();
+  }
+}
 
 module.exports = {
   getAccountDetails,
@@ -386,5 +409,6 @@ module.exports = {
   getCreateCategoryDetails,
   createCategory,
   getModifyTransactionDetails,
-  modifyTransaction
+  modifyTransaction,
+  createAccount
 };

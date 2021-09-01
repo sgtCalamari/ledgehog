@@ -13,9 +13,9 @@ head
 body
   div.container-fluid
     div
-      a(href="/TransactionCategories/CreateCategory"): button(style="float: right; margin-top: 0.75em" class="btn btn-primary"): span.bi.bi-plus New Category
+      a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary(style="float: right; margin-top: 0.75em"): span.bi.bi-plus New Category
       h1
-        a(href="/"): i.bi.bi-house-door
+        a(href=originalUrl): i.bi.bi-arrow-left-circle
         |  Transaction Categories
     div.accordion#categoriesAccordion
       each pc in categories
