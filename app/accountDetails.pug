@@ -2,26 +2,25 @@
 extends layout.pug
 
 block content
-  div.container-fluid
-    div
-      a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary(style="float: right;margin-top: 0.75em"): span.bi.bi-plus New Transaction
-      h1
-        span: a(href="/"): i.bi.bi-arrow-left-circle
-        |  #{accountName} Summary
-    hr
-    h4 Transactions
-    table.table.table-striped.table-responsive.table-hover
-      thead
-        tr
-          th Date
-          th Description
-          th: a(href="/TransactionCategories") Category
-          th Amount
-      tbody
-        if transactions
-          each tx in transactions
-            tr
-              td: a(href="/AccountDetails/"+accountId+"/ModifyTransaction/"+tx.id) #{tx.date}
-              td: strong #{tx.description}
-              td #{tx.category}
-              td $#{tx.amount}
+  div
+    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary(style="float: right;margin-top: 0.75em"): span.bi.bi-plus New Transaction
+    h1
+      span: a(href="/"): i.bi.bi-arrow-left-circle
+      |  #{accountName} Summary
+  hr
+  h4 Transactions
+  table.table.table-striped.table-responsive.table-hover
+    thead
+      tr
+        th Date
+        th Description
+        th: a(href="/TransactionCategories") Category
+        th Amount
+    tbody
+      if transactions
+        each tx in transactions
+          tr
+            td: a(href="/AccountDetails/"+accountId+"/ModifyTransaction/"+tx.id) #{tx.date}
+            td: strong #{tx.description}
+            td #{tx.category}
+            td $#{tx.amount}

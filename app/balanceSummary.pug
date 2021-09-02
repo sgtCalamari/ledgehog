@@ -2,27 +2,26 @@
 extends layout.pug
 
 block content
-  div.container-fluid
-    div
-      a(href="/CreateAccount"): button.btn.btn-primary(style="float: right;margin-top: 0.75em;"): span.bi.bi-plus New Account
-      h1
-        i(class="bi bi-house-door")
-        |  Available Balances
-    table.table.table-striped.table-responsive
-      thead
+  div
+    a(href="/CreateAccount"): button.btn.btn-primary(style="float: right;margin-top: 0.75em;"): span.bi.bi-plus New Account
+    h1
+      i(class="bi bi-house-door")
+      |  Available Balances
+  table.table.table-striped.table-responsive
+    thead
+      tr
+        th Last Transaction Date
+        th Account Name
+        th Balance
+        th Available Credit
+    tbody
+      each detail in accountDetails
         tr
-          th Last Transaction Date
-          th Account Name
-          th Balance
-          th Available Credit
-      tbody
-        each detail in accountDetails
-          tr
-            td #{detail.lastTxDate}
+          td #{detail.lastTxDate}
+          td
+            a(href='/AccountDetails/'+detail.accountId) #{detail.accountAdmin} #{detail.accountName}
+          td $#{detail.balance}
+          if detail.credit
+            td $#{detail.credit}
+          else
             td
-              a(href='/AccountDetails/'+detail.accountId) #{detail.accountAdmin} #{detail.accountName}
-            td $#{detail.balance}
-            if detail.credit
-              td $#{detail.credit}
-            else
-              td
