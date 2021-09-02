@@ -233,7 +233,15 @@ async function getBalanceSummary() {
       results.push(balanceSummary);
     }
     return {
-      accountDetails: results.sort(r => r.accountName)
+      accountDetails: results.sort((a, b) => {
+        var nameA = `${a.accountAdmin} ${a.accountName}`.toUpperCase();
+        var nameB = `${b.accountAdmin} ${b.accountName}`.toUpperCase();
+        if (nameA < nameB) {
+          return -1;
+        } else {
+          return 1;
+        } return 0;
+      })
     };
   } finally {
     await client.close();

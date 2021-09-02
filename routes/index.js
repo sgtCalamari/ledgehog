@@ -1,9 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
 const app = express();
-app.displayName = 'Ledgehog';
-app.localPort = 8080;
 
 // middleware
 app.use(bodyParser.urlencoded({extended: true}));

@@ -1,4 +1,6 @@
 const app = require('./routes');
+app.displayName = 'Ledgehog';
+app.localPort = 8080;
 
 // start server
 app.listen(app.localPort, () => {
