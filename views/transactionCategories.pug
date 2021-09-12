@@ -1,0 +1,21 @@
+//- page to show available transaction categories and link to add new categories
+extends layout.pug
+
+block scripts
+  - var title = 'Transaction Categories';
+block content
+  div
+    a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary(style="float: right; margin-top: 0.75em"): span.bi.bi-plus New Category
+    h1
+      a(href=originalUrl): i.bi.bi-arrow-left-circle
+      |  Transaction Categories
+  div.accordion#categoriesAccordion
+    each pc in categories
+      div.accordion-item
+        h2.accordion-header(id="heading_" + pc.parentId)
+          button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#collapse_" + pc.parentId aria-controls="collapse_" + pc.parentId) #{pc.parentCategory}
+        div.accordion-collapse.collapse(id="collapse_" + pc.parentId aria-labelledby="heading_" + pc.parentId data-bs-parent="#categoriesAccordion")
+          div.accordion-body
+           ul
+            each sc in pc.subcategories
+              li #{sc}

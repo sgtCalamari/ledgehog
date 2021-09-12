@@ -1,0 +1,20 @@
+//- login page to allow user to login or link to page for new user to register
+extends layout.pug
+
+block scripts
+  - var title = 'Login';
+block content
+  div
+    h1 User Login
+  div#userLoginForm
+    form(method="post" action="/Login" enctype="application/x-www-form-urlencoded")
+      div.mb-3
+        label.form-label(for="username") Username
+        input.form-control#username(type="text" name="username" required)
+      div.mb-3
+        label.form-label(for="password") Password
+        input.form-control#password(type="password" name="password" required)
+      div.mb-3
+        button.btn.btn-primary(type="submit") Submit
+  div
+    a(href="/Register"): button.btn.btn-secondary: span:bi:bi-plus New User?

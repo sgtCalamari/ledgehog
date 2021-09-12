@@ -1,4 +1,3 @@
-const pug = require('pug');
 const ObjectId = require('mongodb').ObjectId;
 const db = require('../services/db');
 
@@ -8,23 +7,20 @@ module.exports.accountDetails = async (req, res) => {
   var accountDetailsQuery = db.getAccountDetails(req.params.accountId);
   accountDetailsQuery.then(result => {
     result.title = `${result.accountName} | Account Details`;
-    res.send(pug.renderFile('./app/accountDetails.pug', result));
+    res.render('accountDetails.pug', result);
   });
 };
 module.exports.createTxDetails = async (req, res) => {
   console.log('routing to create transaction for specific account page');
   var createTxDetailsQuery = db.getCreateTransactionDetails(req.params.accountId);
-  createTxDetailsQuery.then(result => {
-    result.title = 'Create Transaction';
-    res.send(pug.renderFile('./app/createTransaction.pug', result));
-  });
+  createTxDetailsQuery.then(result => res.render('createTransaction.pug', result));
 };
 module.exports.modifyTxDetails = async (req, res) => {
   console.log('routing to modify specific transaction page');
   var modifyTxDetailsQuery = db.getModifyTransactionDetails(req.params.accountId, req.params.transactionId);
   modifyTxDetailsQuery.then(result => {
     result.title = `${result.transaction.description} | Modify Transaction`;
-    res.send(pug.renderFile('./app/modifyTransaction.pug', result));
+    res.render('modifyTransaction.pug', result);
   });
 };
 

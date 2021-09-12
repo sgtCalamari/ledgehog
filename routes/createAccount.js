@@ -1,5 +1,5 @@
-const controller = require('../controllers/createAccount.controller');
 const router = require('express').Router();
+const controller = require('../controllers/createAccount.controller');
 
 // GET create account page
 router.get('/', controller.createAccountDetails);

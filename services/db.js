@@ -1,8 +1,9 @@
+require('dotenv').config();
+const uri = process.env.DB_STRING;
 const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
-const uri = require('../config/db.config').uri;
 const client = new MongoClient(uri);
-const database = client.db('ledger');
+const database = client.db(process.env.DB_NAME);
 
 // accounts queries
 async function getAccountNameById(accountId) {

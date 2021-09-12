@@ -1,11 +1,10 @@
-const pug = require('pug');
 const ObjectId = require('mongodb').ObjectId;
 const db = require('../services/db');
 
 // GET
 module.exports.createAccountDetails = async (req, res) => {
   console.log('routing to create new account page');
-  res.send(pug.renderFile('./app/createAccount.pug',{title: 'Create Account'}));
+  res.render('createAccount.pug');
 };
 
 // POST

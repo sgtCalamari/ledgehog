@@ -1,0 +1,35 @@
+//- page to create new transaction for the given account
+extends layout.pug
+
+block scripts
+  - var title = 'Create Transaction';
+block content
+  h1
+    span: a(href="/AccountDetails/" + accountId): i.bi.bi-x-circle
+    |  Create New Transaction
+  form(method="post" action="/AccountDetails/" + accountId enctype="application/x-www-form-urlencoded")
+    div.mb-3
+      label.form-label(for="txDate") Date
+      input.form-control#txDate(type="date" name="date" value=new Intl.DateTimeFormat('se-SE').format(new Date()))
+    div.mb-3
+      label.form-label(for="txAccount") Account
+      input.form-control#txAccount(name="accountName" type="text" value=accountName readonly)
+    div.mb-3
+      label.form-label(for="txDesc") Description
+      input.form-control#txDesc(name="description")
+    div.mb-3
+      label.form-label(for="txCategory") Category
+      select.form-select#txCategory(aria-label="Category Select" name="category")
+        each category in categories
+          option #{category}
+    div.mb-3
+      div.form-check.form-switch
+        input.form-check-input#txIsDeposit(type="checkbox" value='checked' name="isDeposit")
+        label.form-check-label(for="txIsDeposit") Is Deposit?
+    div.mb-3
+      label.form-label(for="txAmount") Amount
+      div.input-group
+        span.input-group-text $
+        input.form-control#txAmount(type="text" aria-label="Transaction Amount" name="amount" placeholder='0.00')
+    div.mb-3
+      button.btn.btn-primary(type="submit") Submit

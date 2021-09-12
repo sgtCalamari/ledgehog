@@ -1,19 +1,23 @@
 const express = require('express');
 const app = express();
+const balanceSummary = require('./balanceSummary');
+const accountDetails = require('./accountDetails');
+const txCategories = require('./transactionCategories');
+const createAccount = require('./createAccount');
+const login = require('./login');
+const register = require('./register');
 
 // app routes
-const balanceSummary = require('./balanceSummary');
 app.use('/BalanceSummary', balanceSummary);
-const accountDetails = require('./accountDetails');
 app.use('/AccountDetails', accountDetails);
-const txCategories = require('./transactionCategories');
 app.use('/TransactionCategories', txCategories);
-const createAccount = require('./createAccount');
 app.use('/CreateAccount', createAccount);
+app.use('/Login', login);
+app.use('/Register', register);
 
 // default routes
 app.get('/', function(req, res) {
-  res.redirect('/BalanceSummary');
+  res.redirect('/Login');
 });
 app.get('*', function(req, res) {
   // TODO: what goes here?
