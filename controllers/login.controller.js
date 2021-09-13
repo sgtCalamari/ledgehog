@@ -1,7 +1,7 @@
 // GET
 module.exports.getLoginPage = async (req, res) => {
   console.log('routing to login page');
-  res.render('./app/login.pug');
+  res.render('login.pug');
 };
 
 // POST

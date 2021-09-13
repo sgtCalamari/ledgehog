@@ -3,7 +3,7 @@ const routes = require('./routes');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 //require('./services/passport');
-require('dotenv').config();
+require('dotenv').config(); // exposes process.env.VARIABLE_NAME
 const app = express();
 app.displayName = process.env.DISPLAY_NAME;
 app.localPort = process.env.PORT || 8080;
@@ -29,10 +29,8 @@ app.use(express.urlencoded({extended: true}));
 //app.use(passport.initialize());
 //app.use(passport.session());
 
-// view engine
+// view engine and routes
 app.set('view engine', 'pug');
-
-// app routes
 app.use(routes);
 
 // start server

@@ -1,11 +1,15 @@
 const express = require('express');
 const app = express();
+
+// routers
 const balanceSummary = require('./balanceSummary');
 const accountDetails = require('./accountDetails');
 const txCategories = require('./transactionCategories');
 const createAccount = require('./createAccount');
 const login = require('./login');
 const register = require('./register');
+
+// middleware
 
 // app routes
 app.use('/BalanceSummary', balanceSummary);
