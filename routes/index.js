@@ -25,7 +25,7 @@ app.use('/CreateAccount', createAccount);
 
 // default routes
 app.get('/', function(req, res) {
-  res.redirect('/Login');
+  res.redirect('/BalanceSummary');
 });
 app.get('*', function(req, res) {
   // TODO: what goes here?
