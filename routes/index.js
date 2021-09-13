@@ -9,15 +9,19 @@ const createAccount = require('./createAccount');
 const login = require('./login');
 const register = require('./register');
 
+// before auth routes
+app.use('/Login', login);
+app.use('/Register', register);
+
 // middleware
+const auth = require('./auth.middleware');
+app.use(auth.isAuth);
 
 // app routes
 app.use('/BalanceSummary', balanceSummary);
 app.use('/AccountDetails', accountDetails);
 app.use('/TransactionCategories', txCategories);
 app.use('/CreateAccount', createAccount);
-app.use('/Login', login);
-app.use('/Register', register);
 
 // default routes
 app.get('/', function(req, res) {

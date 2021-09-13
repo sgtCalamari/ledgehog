@@ -1,3 +1,5 @@
+const passport = require('passport');
+
 // GET
 module.exports.getLoginPage = async (req, res) => {
   console.log('routing to login page');
@@ -5,8 +7,7 @@ module.exports.getLoginPage = async (req, res) => {
 };
 
 // POST
-module.exports.postLoginPage = async (req, res, next) => {
-  console.log('handling requested user login');
-
-  res.redirect('/');
-};
+module.exports.postLoginPage = passport.authenticate('local', {
+  failureRedirect: '/Login',
+  successRedirect: '/BalanceSummary'
+});

@@ -1,23 +1,24 @@
 const express = require('express');
-const routes = require('./routes');
-const session = require('express-session');
 const MongoStore = require('connect-mongo');
-//require('./services/passport');
+const passport = require('passport');
+const session = require('express-session');
+const routes = require('./routes');
 require('dotenv').config(); // exposes process.env.VARIABLE_NAME
 const app = express();
 app.displayName = process.env.DISPLAY_NAME;
 app.localPort = process.env.PORT || 8080;
 
 // session setup
+const mongoStore = MongoStore.create({
+  mongoUrl: process.env.DB_STRING,
+  dbName: process.env.DB_NAME,
+  ttl: 1000 * 60 * 60 * 24 // = 1 day
+});
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  store: MongoStore.create({
-    mongoUrl: process.env.DB_STRING,
-    dbName: process.env.DB_NAME,
-    ttl: 1000 * 60 * 60 * 24 // = 1 day
-  }),
+  store: mongoStore,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 // = 1 day
   }
@@ -26,12 +27,17 @@ app.use(session({
 // middleware
 app.use(express.json()); // replaces body-parser
 app.use(express.urlencoded({extended: true}));
-//app.use(passport.initialize());
-//app.use(passport.session());
+
+// authentication
+require('./services/passport');
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine and routes
 app.set('view engine', 'pug');
 app.use(routes);
+
+// error handler
 
 // start server
 app.listen(app.localPort, () => {

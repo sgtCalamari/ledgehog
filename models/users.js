@@ -1,12 +1,17 @@
 const mongoose = require('mongoose');
+const isValidPassword = require('../lib/passwordUtil').isValidPassword;
 
-const UserSchema = new mongoose.Schema({
+const Schema = new mongoose.Schema({
   username: String,
-  salt: String,
   hash: String,
+  salt: String,
   admin: Boolean
 });
 
+Schema.methods.verifyPassword = function(password) {
+  return isValidPassword(password, this.hash, this.salt);
+};
+
 module.exports = {
-  UserSchema
+  Schema
 };
