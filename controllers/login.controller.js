@@ -8,6 +8,6 @@ module.exports.getLoginPage = async (req, res) => {
 
 // POST
 module.exports.postLoginPage = passport.authenticate('local', {
-  failureRedirect: '/Login',
+  failureRedirect: '/Login?error=loginFailed',
   successRedirect: '/BalanceSummary'
 });

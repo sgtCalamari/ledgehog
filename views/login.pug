@@ -22,5 +22,7 @@ block content
               case error
                 when 'userExists'
                   div.alert.alert-warning A user already exists with that username. Please log in or register with a different username.
+                when 'loginFailed'
+                  div.alert.alert-warning Username or password entered was invalid.  Please try logging in again.
           div.mb-3
             button.btn.btn-primary(type="submit") Submit
