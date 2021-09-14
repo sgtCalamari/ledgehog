@@ -1,5 +1,12 @@
-.btn-header {
-  margin-top: 0.25rem;
+@media (max-width: 1399px) {
+  .btn-header {
+    margin-top: 0.25rem;
+  }
+}
+@media (min-width: 1400px) {
+  .btn-header {
+    margin-top: 0.75rem;
+  }
 }
 
 small {
