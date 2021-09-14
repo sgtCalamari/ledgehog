@@ -8,7 +8,9 @@ block content
     h1
       a(href=originalUrl): i.bi.bi-arrow-left-circle
       |  Transaction Categories
-    a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Category
+    div
+      a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Category
+      a(href="/Logout"): button.btn.btn-outline-primary.btn-header Logout
   div.accordion#categoriesAccordion
     each pc in categories
       div.accordion-item

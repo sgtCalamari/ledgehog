@@ -6,9 +6,11 @@ block content
     h1
       span: a(href="/"): i.bi.bi-arrow-left-circle
       |  #{accountName} Summary
-    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Transaction
+    a(href="/Logout"): button.btn.btn-outline-primary.btn-header Logout
   hr
-  h4 Transactions
+  div.d-flex.justify-content-between
+    h4 Transactions
+    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary: span.bi.bi-plus New Transaction
   table.table.table-striped.table-responsive.table-hover
     thead
       tr
