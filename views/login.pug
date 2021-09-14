@@ -5,25 +5,24 @@ block scripts
   - var title = 'Login';
 block content
   div.row.justify-content-md-center
-    div.col-xl-6
-      div.d-flex.justify-content-between
-        div: h1 User Login
-        a(href="/Register"): button.btn.btn-secondary.btn-header: span:bi:bi-plus New User?
-      div#userLoginForm
-        form.row(method="post" action="/Login" enctype="application/x-www-form-urlencoded")
-          div.mb-3
-            label.form-label(for="username") Username
-            input.form-control#username(type="text" name="username" required)
-          div.mb-3
-            label.form-label(for="password") Password
-            input.form-control#password(type="password" name="password" required)
-          if query
-            div#alerts
-              if query.userExists !== undefined
-                div.alert.alert-warning A user already exists with that username. Please log in or register with a different username.
-              if query.loginFailed !== undefined
-                div.alert.alert-warning Username or password entered was invalid.  Please try logging in again.
-              if query.registerSuccess !== undefined
-                div.alert.alert-success Successfully registered new user.  Please login.
-          div.mb-3
-            button.btn.btn-primary(type="submit") Submit
+    div.d-flex.justify-content-between
+      div: h1 User Login
+      a(href="/Register"): button.btn.btn-secondary.btn-header: span:bi:bi-plus New User?
+    div#userLoginForm
+      form.row(method="post" action="/Login" enctype="application/x-www-form-urlencoded")
+        div.mb-3
+          label.form-label(for="username") Username
+          input.form-control#username(type="text" name="username" required)
+        div.mb-3
+          label.form-label(for="password") Password
+          input.form-control#password(type="password" name="password" required)
+        if query
+          div#alerts
+            if query.userExists !== undefined
+              div.alert.alert-warning A user already exists with that username. Please log in or register with a different username.
+            if query.loginFailed !== undefined
+              div.alert.alert-warning Username or password entered was invalid.  Please try logging in again.
+            if query.registerSuccess !== undefined
+              div.alert.alert-success Successfully registered new user.  Please login.
+        div.mb-3
+          button.btn.btn-primary(type="submit") Submit

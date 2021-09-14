@@ -5,20 +5,19 @@ block scripts
   - var title = 'Create Category';
 block content
   div.row.justify-content-md-center
-    div.col-md-auto
-      h1
-        span: a(href="/TransactionCategories"): i.bi.bi-x-circle
-        |  Create Transaction Category
-      form(method="post" action="/TransactionCategories/CreateCategory" enctype="application/x-www-form-urlencoded")
-        div.mb-3
-          label.form-label(for="parentCategory") Parent Category  (enter new or leave blank to choose from existing)
-          div.input-group
-            input.form-control#parentCategory(name="parentCategory" type="text" placeholder="new parent category")
-            select.form-select#parentCategorySelect(name="parentCategorySelect" aria-label="Parent Category Select")
-              each pc in parentCategories
-                option #{pc}
-        div.mb-3
-          label.form-label(for="category") Category Description
-          input.form-control#category(name="category" type="text")
-        div.mb-3
-          button.btn.btn-primary(type="submit") Submit
+    h1
+      span: a(href="/TransactionCategories"): i.bi.bi-x-circle
+      |  Create Transaction Category
+    form(method="post" action="/TransactionCategories/CreateCategory" enctype="application/x-www-form-urlencoded")
+      div.mb-3
+        label.form-label(for="parentCategory") Parent Category  (enter new or leave blank to choose from existing)
+        div.input-group
+          input.form-control#parentCategory(name="parentCategory" type="text" placeholder="new parent category")
+          select.form-select#parentCategorySelect(name="parentCategorySelect" aria-label="Parent Category Select")
+            each pc in parentCategories
+              option #{pc}
+      div.mb-3
+        label.form-label(for="category") Category Description
+        input.form-control#category(name="category" type="text")
+      div.mb-3
+        button.btn.btn-primary(type="submit") Submit
