@@ -4,17 +4,23 @@ extends layout.pug
 block scripts
   - var title = 'Login';
 block content
-  div
-    h1 User Login
-  div#userLoginForm
-    form(method="post" action="/Login" enctype="application/x-www-form-urlencoded")
-      div.mb-3
-        label.form-label(for="username") Username
-        input.form-control#username(type="text" name="username" required)
-      div.mb-3
-        label.form-label(for="password") Password
-        input.form-control#password(type="password" name="password" required)
-      div.mb-3
-        button.btn.btn-primary(type="submit") Submit
-  div
-    a(href="/Register"): button.btn.btn-secondary: span:bi:bi-plus New User?
+  div.row.justify-content-md-center
+    div.col-md-5
+      div.d-flex.justify-content-between
+        div: h1 User Login
+        a(href="/Register"): button.btn.btn-secondary.btn-header: span:bi:bi-plus New User?
+      div#userLoginForm
+        form.row(method="post" action="/Login" enctype="application/x-www-form-urlencoded")
+          div.mb-3
+            label.form-label(for="username") Username
+            input.form-control#username(type="text" name="username" required)
+          div.mb-3
+            label.form-label(for="password") Password
+            input.form-control#password(type="password" name="password" required)
+          if error
+            div#alerts
+              case error
+                when 'userExists'
+                  div.alert.alert-warning User already exists. Please log in.
+          div.mb-3
+            button.btn.btn-primary(type="submit") Submit

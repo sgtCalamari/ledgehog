@@ -8,6 +8,7 @@ const txCategories = require('./transactionCategories');
 const createAccount = require('./createAccount');
 const login = require('./login');
 const register = require('./register');
+const logout = require('./logout');
 
 // middleware
 const auth = require('./auth.middleware');
@@ -24,6 +25,7 @@ app.use('/BalanceSummary', balanceSummary);
 app.use('/AccountDetails', accountDetails);
 app.use('/TransactionCategories', txCategories);
 app.use('/CreateAccount', createAccount);
+app.use('/Logout', logout);
 
 // default routes
 app.get('/', function(req, res) {
@@ -31,6 +33,7 @@ app.get('/', function(req, res) {
 });
 app.get('*', function(req, res) {
   // TODO: what goes here?
+  res.redirect('/');
 });
 
 module.exports = app;

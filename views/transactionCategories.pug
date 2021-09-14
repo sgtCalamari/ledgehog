@@ -4,11 +4,11 @@ extends layout.pug
 block scripts
   - var title = 'Transaction Categories';
 block content
-  div
-    a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary(style="float: right; margin-top: 0.75em"): span.bi.bi-plus New Category
+  div.d-flex.justify-content-between
     h1
       a(href=originalUrl): i.bi.bi-arrow-left-circle
       |  Transaction Categories
+    a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Category
   div.accordion#categoriesAccordion
     each pc in categories
       div.accordion-item

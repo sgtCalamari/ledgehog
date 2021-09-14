@@ -4,11 +4,11 @@ extends layout.pug
 block scripts
   - var title = 'Balance Summary';
 block content
-  div
-    a(href="/CreateAccount"): button.btn.btn-primary(style="float: right;margin-top: 0.75em;"): span.bi.bi-plus New Account
+  div.d-flex.justify-content-between
     h1
       i(class="bi bi-house-door")
       |  Available Balances
+    a(href="/CreateAccount"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Account
   table.table.table-striped.table-responsive
     thead
       tr

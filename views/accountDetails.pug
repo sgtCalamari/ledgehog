@@ -2,11 +2,11 @@
 extends layout.pug
 
 block content
-  div
-    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary(style="float: right;margin-top: 0.75em"): span.bi.bi-plus New Transaction
+  div.d-flex.justify-content-between
     h1
       span: a(href="/"): i.bi.bi-arrow-left-circle
       |  #{accountName} Summary
+    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Transaction
   hr
   h4 Transactions
   table.table.table-striped.table-responsive.table-hover

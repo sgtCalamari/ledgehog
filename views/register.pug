@@ -4,42 +4,45 @@ extends layout.pug
 block scripts
   - var title = 'Register';
 block content
-  div
-    h1 User Registration
-  div#userLoginForm
-    form.row(method="post" action="/Register" enctype="application/x-www-form-urlencoded" onsubmit='return validateForm()')
-      div.mb-3
-        label.form-label(for="username") Username
-        input.form-control#username(type="text" name="username" required)
-      div.mb-3.col-md-6
-        label.form-label(for="password") Password (should be less than 30 characters)
-        input.form-control#password(type="password" name="password" required)
-      div.mb-3.col-md-6
-        label.form-label(for="retypePassword") Re-type Password
-        input.form-control#retypePassword(type="password" name="retypePassword" required)
-      div#alerts
-      div.mb-3
-        button.btn.btn-primary(type="submit") Submit
-  script.
-    function validateForm() {
-      var alertsDiv = document.getElementById('alerts');
-      alertsDiv.innerHTML = null; // clear existing alerts
-      var alert = document.createElement('div');
-      alert.className = "alert alert-warning";
-      alert.role = "alert";
+  div.row.justify-content-md-center
+    div.col-md-5
+      div.d-flex.justify-content-between
+        h1 User Registration
+        a(href="/"): button.btn.btn-secondary.btn-header Cancel
+      div#userLoginForm
+        form.row(method="post" action="/Register" enctype="application/x-www-form-urlencoded" onsubmit='return validateForm()')
+          div.mb-3
+            label.form-label(for="username") Username
+            input.form-control#username(type="text" name="username" required)
+          div.mb-3.col-md-6
+            label.form-label(for="password") Password (should be less than 30 characters)
+            input.form-control#password(type="password" name="password" required)
+          div.mb-3.col-md-6
+            label.form-label(for="retypePassword") Re-type Password
+            input.form-control#retypePassword(type="password" name="retypePassword" required)
+          div#alerts
+          div.mb-3
+            button.btn.btn-primary(type="submit") Submit
+      script.
+        function validateForm() {
+          var alertsDiv = document.getElementById('alerts');
+          alertsDiv.innerHTML = null; // clear existing alerts
+          var alert = document.createElement('div');
+          alert.className = "alert alert-warning";
+          alert.role = "alert";
 
-      let pw = document.getElementById('password').value;
-      if (pw.length > 30) {
-        alert.innerHTML = `Password is too long! (${pw.length} > 30)`;
-        alertsDiv.appendChild(alert);
-        return false;
-      }
+          let pw = document.getElementById('password').value;
+          if (pw.length > 30) {
+            alert.innerHTML = `Password is too long! (${pw.length} > 30)`;
+            alertsDiv.appendChild(alert);
+            return false;
+          }
 
-      let check = document.getElementById('retypePassword').value;
-      var isMatch = pw === check;
-      if (!isMatch) {
-        alert.innerHTML = 'Passwords do not match!';
-        alertsDiv.appendChild(alert);
-      }
-      return isMatch;
-    }
+          let check = document.getElementById('retypePassword').value;
+          var isMatch = pw === check;
+          if (!isMatch) {
+            alert.innerHTML = 'Passwords do not match!';
+            alertsDiv.appendChild(alert);
+          }
+          return isMatch;
+        }

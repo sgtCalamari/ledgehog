@@ -3,7 +3,10 @@ module.exports.isAuth = (req, res, next) => {
     next();
   } else {
     console.log('user not logged in');
-    res.status(401).redirect('/Login');
+    try {
+      res.status(401);
+    } catch {}
+    res.redirect('/Login');
   }
 };
 
