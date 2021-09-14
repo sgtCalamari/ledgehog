@@ -38,6 +38,7 @@ app.set('view engine', 'pug');
 app.use(routes);
 
 // error handler
+// TODO: error handler goes here!
 
 // start server
 app.listen(app.localPort, () => {

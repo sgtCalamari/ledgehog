@@ -1,9 +1,6 @@
 const express = require('express');
 const app = express();
 
-// import middleware
-const auth = require('./auth.middleware');
-
 // routers
 const balanceSummary = require('./balanceSummary');
 const accountDetails = require('./accountDetails');
@@ -12,14 +9,17 @@ const createAccount = require('./createAccount');
 const login = require('./login');
 const register = require('./register');
 
-// before auth routes
+// middleware
+const auth = require('./auth.middleware');
+
+// pre-auth app routes
 app.use('/Login', login);
 app.use('/Register', register);
 
-// middleware
+// authentication
 app.use(auth.isAuth);
 
-// app routes
+// post-auth app routes
 app.use('/BalanceSummary', balanceSummary);
 app.use('/AccountDetails', accountDetails);
 app.use('/TransactionCategories', txCategories);
