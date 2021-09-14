@@ -1,3 +1,7 @@
 .btn-header {
   margin-top: 0.25rem;
 }
+
+small {
+  font-size: 0.65em;
+}
