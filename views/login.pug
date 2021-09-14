@@ -17,12 +17,13 @@ block content
           div.mb-3
             label.form-label(for="password") Password
             input.form-control#password(type="password" name="password" required)
-          if error
+          if query
             div#alerts
-              case error
-                when 'userExists'
-                  div.alert.alert-warning A user already exists with that username. Please log in or register with a different username.
-                when 'loginFailed'
-                  div.alert.alert-warning Username or password entered was invalid.  Please try logging in again.
+              if query.userExists !== undefined
+                div.alert.alert-warning A user already exists with that username. Please log in or register with a different username.
+              if query.loginFailed !== undefined
+                div.alert.alert-warning Username or password entered was invalid.  Please try logging in again.
+              if query.registerSuccess !== undefined
+                div.alert.alert-success Successfully registered new user.  Please login.
           div.mb-3
             button.btn.btn-primary(type="submit") Submit

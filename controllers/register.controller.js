@@ -21,18 +21,13 @@ module.exports.postRegisterPage = async (req, res) => {
   const admin = false;
 
   const newUser = new User({username, hash, salt, admin});
-  var redirectUrl = '/Login';
+  var redirectUrl = '/Login?registerSuccess';
 
   await User.findOne({ username })
     .then(user => {
       if (user) {
         console.log('existing user found. skipping register, routing to login');
-        redirectUrl = url.format({
-          pathname: '/Login',
-          query: {
-            error: 'userExists'
-          }
-        });
+        redirectUrl = '/Login?userExists';
       }
       else {
         console.log('registering new user');

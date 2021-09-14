@@ -10,6 +10,7 @@ const connection = mongoose.createConnection(conn, {
   dbName: process.env.DB_NAME
 });
 
-const User = connection.model('User', models.UserSchema);
+connection.model('User', models.UserSchema);
+connection.model('Account', models.AccountSchema);
 
 module.exports = connection;

@@ -1,5 +1,2 @@
-const UserSchema = require('./users').Schema;
-
-module.exports = {
-  UserSchema
-}
+module.exports.AccountSchema = require('./accounts').Schema;
+module.exports.UserSchema = require('./users').Schema;
