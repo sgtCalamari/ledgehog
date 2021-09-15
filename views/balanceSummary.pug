@@ -7,10 +7,10 @@ block content
   div.d-flex.justify-content-between
     h1: span(class="bi bi-house-door")  Available Balances
     div
-      a(href="/CreateAccount"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Account
-      span 
-      a(href="/Logout"): button.btn.btn-outline-primary.btn-header Logout
-  table.table.table-striped.table-responsive
+      a(href="/CreateAccount").btn.btn-primary.btn-sm.btn-header: span.bi.bi-plus New Account
+      span #{" "}
+      a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
+  table.table.table-striped.table-responsive.table-sm
     thead
       tr
         th Last Transaction Date

@@ -3,15 +3,15 @@ extends layout.pug
 
 block content
   div.d-flex.justify-content-between
-    h1
+    h2
       span: a(href="/"): i.bi.bi-arrow-left-circle
       |  #{accountName} Summary
-    a(href="/Logout"): button.btn.btn-outline-primary.btn-header Logout
+    a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
   hr
   div.d-flex.justify-content-between
     h4 Transactions
-    a(href="/AccountDetails/" + accountId + "/CreateTransaction"): button.btn.btn-primary: span.bi.bi-plus New Transaction
-  table.table.table-striped.table-responsive.table-hover
+    a(href="/AccountDetails/" + accountId + "/CreateTransaction").btn.btn-primary.btn-sm: span.bi.bi-plus New Transaction
+  table.table.table-striped.table-responsive.table-hover.table-sm
     thead
       tr
         th Date

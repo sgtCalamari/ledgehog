@@ -5,13 +5,13 @@ block scripts
   - var title = 'Transaction Categories';
 block content
   div.d-flex.justify-content-between
-    h1
+    h2
       a(href=originalUrl): i.bi.bi-arrow-left-circle
       |  Transaction Categories
     div
-      a(href="/TransactionCategories/CreateCategory"): button.btn.btn-primary.btn-header: span.bi.bi-plus New Category
-      span 
-      a(href="/Logout"): button.btn.btn-outline-primary.btn-header Logout
+      a(href="/TransactionCategories/CreateCategory").btn.btn-primary.btn-sm.btn-header: span.bi.bi-plus New Category
+      span #{" "}
+      a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
   div.accordion#categoriesAccordion
     each pc in categories
       div.accordion-item
