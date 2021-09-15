@@ -2,13 +2,13 @@
 extends layout.pug
 
 block content
-  div.d-flex.justify-content-between
+  div.d-flex.justify-content-between.align-items-center
     h2
       span: a(href="/"): i.bi.bi-arrow-left-circle
       |  #{accountName} Summary
-    a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
+    a(href="/Logout").btn.btn-outline-primary.btn-sm Logout
   hr
-  div.d-flex.justify-content-between
+  div.d-flex.justify-content-between.align-items-center
     h4 Transactions
     a(href="/AccountDetails/" + accountId + "/CreateTransaction").btn.btn-primary.btn-sm: span.bi.bi-plus New Transaction
   table.table.table-striped.table-responsive.table-hover.table-sm

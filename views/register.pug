@@ -5,9 +5,9 @@ block scripts
   - var title = 'Register';
 block content
   div.row.justify-content-md-center
-    div.d-flex.justify-content-between
+    div.d-flex.justify-content-between.align-items-center
       h1 User Registration
-      a(href="/"): button.btn.btn-secondary.btn-header Cancel
+      a(href="/").btn.btn-secondary Cancel
     div#userLoginForm
       form.row(method="post" action="/Register" enctype="application/x-www-form-urlencoded" onsubmit='return validateForm()')
         div.mb-3

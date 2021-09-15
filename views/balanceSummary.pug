@@ -4,12 +4,12 @@ extends layout.pug
 block scripts
   - var title = 'Balance Summary';
 block content
-  div.d-flex.justify-content-between
+  div.d-flex.justify-content-between.align-items-center
     h1: span(class="bi bi-house-door")  Available Balances
     div
-      a(href="/CreateAccount").btn.btn-primary.btn-sm.btn-header: span.bi.bi-plus New Account
+      a(href="/CreateAccount").btn.btn-primary.btn-sm: span.bi.bi-plus New Account
       span #{" "}
-      a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
+      a(href="/Logout").btn.btn-outline-primary.btn-sm Logout
   table.table.table-striped.table-responsive.table-sm
     thead
       tr
