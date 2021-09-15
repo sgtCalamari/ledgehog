@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const db = require('../services/db');
+require('dotenv').config();
 
 // GET
 module.exports.createAccountDetails = async (req, res) => {
@@ -10,6 +10,7 @@ module.exports.createAccountDetails = async (req, res) => {
 // POST
 module.exports.createAccount = async (req, res) => {
   console.log('attempting to add new account to database');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   // attempt add new document to db
   const name = req.body.accountName;
   const admin = req.body.accountAdmin;

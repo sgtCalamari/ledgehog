@@ -1,8 +1,9 @@
-const db = require('../services/db');
+require('dotenv').config();
 
 // GET
 module.exports.transactionCategories = async (req, res) => {
   console.log('routing to transaction categories summary');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   var transactionCategoriesQuery = db.getTransactionCategoriesSummary();
   transactionCategoriesQuery.then(result => {
     if (req.headers.referer) {
@@ -15,12 +16,14 @@ module.exports.transactionCategories = async (req, res) => {
 };
 module.exports.createCategoryDetails = async (req, res) => {
   console.log('routing to create transaction category screen');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   var createCategoryDetailsQuery = db.getCreateCategoryDetails();
   createCategoryDetailsQuery.then(r => res.render('createCategory.pug', r));
 };
 
 // POST
 module.exports.createCategory = async (req, res) => {
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   // add document to mongo
   var newCategory = {
     parentCategory: req.body.parentCategory,
