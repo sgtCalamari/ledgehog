@@ -1,5 +1,6 @@
 # Ledgehog
-### Simple ledger application built in JavaScript using NodeJS, Express, MongoDB and PUG.
+## Description
+Simple ledger application built in JavaScript using NodeJS, Express, MongoDB and PUG.
 
 ## Additional Resources:
 - **PassportJS**: for user authentication
