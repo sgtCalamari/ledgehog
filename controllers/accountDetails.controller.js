@@ -32,7 +32,7 @@ module.exports.createTx = async (req, res) => {
   const txDate = new Date(req.body.date);
   const txDesc = req.body.description;
   const txCategory = req.body.category;
-  const txAmount = parseFloat(req.body.amount);
+  const txAmount = parseFloat(req.body.amount.replace(",", ""));
   const isDeposit = req.body.isDeposit === 'checked';
   const newTransaction = {
     date: txDate ?? new Date(),
