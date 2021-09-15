@@ -9,10 +9,10 @@ block content
       a(href=originalUrl): i.bi.bi-arrow-left-circle
       |  Transaction Categories
     div
-      a(href="/TransactionCategories/CreateCategory").btn.btn-primary.btn-sm.btn-header: span.bi.bi-plus New Category
-      span #{" "}
       a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
-  div.accordion#categoriesAccordion
+  div.d-flex.justify-content-end
+    a(href="/TransactionCategories/CreateCategory").btn.btn-primary.btn-sm: span.bi.bi-plus New Category
+  div.accordion#categoriesAccordion.my-1
     each pc in categories
       div.accordion-item
         h2.accordion-header(id="heading_" + pc.parentId)
