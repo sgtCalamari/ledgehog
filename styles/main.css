@@ -1,14 +1,16 @@
 @media (max-width: 1399px) {
   .btn-header {
-    margin-top: 0.25rem;
+    margin-top: 0.25em;
+  }
+  small {
+    font-size: 0.55em;
   }
 }
 @media (min-width: 1400px) {
   .btn-header {
-    margin-top: 0.75rem;
+    margin-top: 0.75em;
   }
-}
-
-small {
-  font-size: 0.65em;
+  small {
+    font-size: 0.75em;
+  }
 }
