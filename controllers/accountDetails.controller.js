@@ -1,9 +1,9 @@
 const ObjectId = require('mongodb').ObjectId;
-const db = require('../services/db');
 
 // GET
 module.exports.accountDetails = async (req, res) => {
   console.log('routing to specific account details');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   var accountDetailsQuery = db.getAccountDetails(req.params.accountId);
   accountDetailsQuery.then(result => {
     result.title = `${result.accountName} | Account Details`;
@@ -12,11 +12,13 @@ module.exports.accountDetails = async (req, res) => {
 };
 module.exports.createTxDetails = async (req, res) => {
   console.log('routing to create transaction for specific account page');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   var createTxDetailsQuery = db.getCreateTransactionDetails(req.params.accountId);
   createTxDetailsQuery.then(result => res.render('createTransaction.pug', result));
 };
 module.exports.modifyTxDetails = async (req, res) => {
   console.log('routing to modify specific transaction page');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   var modifyTxDetailsQuery = db.getModifyTransactionDetails(req.params.accountId, req.params.transactionId);
   modifyTxDetailsQuery.then(result => {
     result.title = `${result.transaction.description} | Modify Transaction`;
@@ -27,6 +29,7 @@ module.exports.modifyTxDetails = async (req, res) => {
 // POST
 module.exports.createTx = async (req, res) => {
   console.log('attempting to add new transaction to database');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   // attempt add transaction to db
   const txAccount = new ObjectId(req.params.accountId);
   const txDate = new Date(req.body.date);
@@ -51,6 +54,7 @@ module.exports.createTx = async (req, res) => {
 };
 module.exports.modifyTx = async (req, res) => {
   console.log(`attempting to modify transaction _id: ${req.params.transactionId}`);
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
   // attempt update document
   const txId = new ObjectId(req.params.transactionId);
   const txDate = new Date(req.body.date);
