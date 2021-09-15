@@ -1,8 +1,7 @@
 # Ledgehog
 ## Description
 Simple ledger application built in JavaScript using NodeJS, Express, MongoDB and PUG.
-
-## Additional Resources:
+### Additional Resources:
 - **PassportJS**: for user authentication
 - **Bootstrap**: for UI/UX
 
@@ -11,6 +10,7 @@ Repository has three primary branches:
 - **master**: codebase currently running live on [ledgehog.joemart.in](http://ledgehog.joemart.in/)
 - **dev**: codebase running on development environment
 - **main**: active working branch for development in-flight (*not guaranteed to be stable*)
+
 Additional branches may be created for specific purposes, but the above will always fill their specified role.
 
 ## Other Notes:
