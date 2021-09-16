@@ -12,21 +12,25 @@ block content
   div.d-flex.justify-content-between.align-items-center
     h3 Accounts
     a(href="/CreateAccount").btn.btn-primary.btn-sm: span.bi.bi-plus New Account
-  table.table.table-striped.table-responsive.table-sm
-    thead
-      tr
-        th Last Transaction Date
-        th Account Name
-        th Balance
-        th Available Credit
-    tbody
-      each detail in accountDetails
+  if accountDetails && accountDetails.length !== 0
+    table.table.table-striped.table-responsive.table-sm
+      thead
         tr
-          td #{detail.lastTxDate}
-          td
-            a(href='/AccountDetails/'+detail.accountId) #{detail.accountAdmin} #{detail.accountName}
-          td $#{detail.balance}
-          if detail.credit
-            td $#{detail.credit}
-          else
+          th Last Transaction Date
+          th Account Name
+          th Balance
+          th Available Credit
+      tbody
+        each detail in accountDetails
+          tr
+            td #{detail.lastTxDate}
             td
+              a(href='/AccountDetails/'+detail.accountId) #{detail.accountAdmin} #{detail.accountName}
+            td $#{detail.balance}
+            if detail.credit
+              td $#{detail.credit}
+            else
+              td
+  else
+    div
+      p No accounts available to show. #[a(href="/CreateAccount") Please add an account].
