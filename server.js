@@ -1,3 +1,5 @@
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
@@ -6,7 +8,6 @@ const routes = require('./routes');
 require('dotenv').config(); // exposes process.env.VARIABLE_NAME
 const app = express();
 app.displayName = process.env.DISPLAY_NAME;
-app.localPort = process.env.PORT || 8080;
 
 // session setup
 const mongoStore = MongoStore.create({
@@ -23,6 +24,12 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 // = 1 day
   }
 }));
+
+// SSL options
+var sslOptions = {
+  key: fs.readFileSync(process.env.SSL_KEY),
+  cert: fs.readFileSync(process.env.SSL_CERT)
+};
 
 // middleware
 app.use(express.json()); // replaces body-parser
@@ -41,6 +48,9 @@ app.use(routes);
 // TODO: error handler goes here!
 
 // start server
-app.listen(app.localPort, () => {
-  console.log(`Node Express server for ${app.displayName} listening at http://localhost:${app.localPort}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Node Express server for ${app.displayName} listening at http://localhost:${process.env.PORT}`);
+});
+https.createServer(sslOptions, app).listen(process.env.SSL_PORT, () => {
+  console.log(`SSL server for ${app.displayName} listening at https://localhost:${process.env.SSL_PORT}`);
 });
