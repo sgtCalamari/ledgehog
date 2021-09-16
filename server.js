@@ -1,5 +1,3 @@
-const https = require('https');
-const fs = require('fs');
 const express = require('express');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
@@ -25,12 +23,6 @@ app.use(session({
   }
 }));
 
-// SSL options
-var sslOptions = {
-  key: fs.readFileSync(process.env.SSL_KEY),
-  cert: fs.readFileSync(process.env.SSL_CERT)
-};
-
 // middleware
 app.use(express.json()); // replaces body-parser
 app.use(express.urlencoded({extended: true}));
@@ -50,7 +42,4 @@ app.use(routes);
 // start server
 app.listen(process.env.PORT, () => {
   console.log(`Node Express server for ${app.displayName} listening at http://localhost:${process.env.PORT}`);
-});
-https.createServer(sslOptions, app).listen(process.env.SSL_PORT, () => {
-  console.log(`SSL server for ${app.displayName} listening at https://localhost:${process.env.SSL_PORT}`);
 });
