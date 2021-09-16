@@ -2,6 +2,7 @@ const express = require('express');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const session = require('express-session');
+const path = require('path');
 const routes = require('./routes');
 require('dotenv').config(); // exposes process.env.VARIABLE_NAME
 const app = express();
@@ -26,6 +27,7 @@ app.use(session({
 // middleware
 app.use(express.json()); // replaces body-parser
 app.use(express.urlencoded({extended: true}));
+app.use(express.static('public'));
 
 // authentication
 require('./services/passport');
