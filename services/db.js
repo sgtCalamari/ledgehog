@@ -3,6 +3,7 @@ const uri = process.env.DB_STRING;
 const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
 const client = new MongoClient(uri);
+const defaultCategories = require('../lib/defaultCategories').defaultCategories;
 
 module.exports = function (dbString) {
   const database = client.db(dbString);
@@ -341,6 +342,18 @@ module.exports = function (dbString) {
       await client.close();
     }
   }
+  module.createDefaultCategories = async function() {
+    /* creates default categories in database */
+    try {
+      await client.connect();
+      // transactionTypes query
+      const transactionTypes = database.collection('transactionTypes');
+      const result = await transactionTypes.insertMany(defaultCategories);
+      console.log(`successfully added ${result.insertedCount} default categories`);
+    } finally {
+      await client.close();
+    }
+  }
   module.getModifyTransactionDetails = async function(accountId, transactionId) {
     /* returns object with:
     accountId: String
@@ -411,5 +424,6 @@ module.exports = function (dbString) {
       await client.close();
     }
   }
+
   return module;
 };
