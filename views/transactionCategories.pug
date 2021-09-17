@@ -12,13 +12,19 @@ block content
       a(href="/Logout").btn.btn-outline-primary.btn-sm.btn-header Logout
   div.d-flex.justify-content-end
     a(href="/TransactionCategories/CreateCategory").btn.btn-primary.btn-sm: span.bi.bi-plus New Category
-  div.accordion#categoriesAccordion.my-1
-    each pc in categories
-      div.accordion-item
-        h2.accordion-header(id="heading_" + pc.parentId)
-          button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#collapse_" + pc.parentId aria-controls="collapse_" + pc.parentId) #{pc.parentCategory}
-        div.accordion-collapse.collapse(id="collapse_" + pc.parentId aria-labelledby="heading_" + pc.parentId data-bs-parent="#categoriesAccordion")
-          div.accordion-body
-           ul
-            each sc in pc.subcategories
-              li #{sc}
+  if categories && categories.length !== 0
+    div.accordion#categoriesAccordion.my-1
+      each pc in categories
+        div.accordion-item
+          h2.accordion-header(id="heading_" + pc.parentId)
+            button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#collapse_" + pc.parentId aria-controls="collapse_" + pc.parentId) #{pc.parentCategory}
+          div.accordion-collapse.collapse(id="collapse_" + pc.parentId aria-labelledby="heading_" + pc.parentId data-bs-parent="#categoriesAccordion")
+            div.accordion-body
+             ul
+              each sc in pc.subcategories
+                li #{sc}
+  else
+    div#noCategories
+      p No categories to show.
+      |
+      form.form(action="/TransactionCategories" method="post"): button.btn.btn-primary(type='submit') Add Default Categories

@@ -35,3 +35,9 @@ module.exports.createCategory = async (req, res) => {
   db.createCategory(newCategory)
     .then(result => res.redirect('/TransactionCategories/CreateCategory'));
 };
+module.exports.createDefaultCategories = async (req, res) => {
+  console.log('routing to create default categories');
+  const db = require('../services/db')(req.session.passport.user || process.env.DB_NAME);
+  db.createDefaultCategories()
+    .then(result => res.redirect('/TransactionCategories'));
+};
