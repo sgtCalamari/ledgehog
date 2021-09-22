@@ -12,10 +12,10 @@ block content
       form.row(method="post" action="/Login" enctype="application/x-www-form-urlencoded")
         div.mb-3
           label.form-label(for="username") Username
-          input.form-control#username(type="text" name="username" required)
+          input.form-control#username(type="text" name="username" autocomplete='username' required)
         div.mb-3
           label.form-label(for="password") Password
-          input.form-control#password(type="password" name="password" required)
+          input.form-control#password(type="password" name="password" autocomplete='current-password' required)
         if query
           div#alerts
             if query.userExists !== undefined
